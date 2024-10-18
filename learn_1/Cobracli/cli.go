@@ -15,5 +15,7 @@ func main() {
 	sqlcommands.AddCommand(insertCmd)
 	sqlcommands.AddCommand(Updatecmd)
 	sqlcommands.AddCommand(Deletecmd)
+	sqlcommands.AddCommand(Readcmd)
+	sqlcommands.AddCommand(Readallcmd)
 	Execute()
 }

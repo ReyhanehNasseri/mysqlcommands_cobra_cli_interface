@@ -22,9 +22,6 @@ var insertCmd = &cobra.Command{
 		firstname := args[1]
 		lastname := args[2]
 		id, err := strconv.Atoi(args[0])
-		fmt.Println(id)
-		fmt.Println(firstname)
-		fmt.Println(lastname)
 		if err != nil {
 			log.Println("Error converting age to integer:", err)
 			return
@@ -34,12 +31,8 @@ var insertCmd = &cobra.Command{
 		newuser.ID = id
 		newuser.Firstname = firstname
 		newuser.Lastname = lastname
-		fmt.Println(newuser.ID)
-		fmt.Println(newuser.Firstname)
-		fmt.Println(newuser.Lastname)
 
 		saveduser, err := dbmanagement.InsertUser(newuser)
-		fmt.Println(saveduser)
 		if err != nil {
 			log.Fatalf("Error inserting user: %v", err)
 		}
@@ -56,7 +49,6 @@ var Updatecmd = &cobra.Command{
 		newlastname := args[2]
 		id, err := strconv.Atoi(args[0])
 		updateduser := dbmanagement.UpdateUser(id, newfirstname, newlastname)
-		fmt.Println(updateduser)
 		if err != nil {
 			log.Fatalf("Error inserting user: %v", err)
 		}
@@ -69,12 +61,29 @@ var Deletecmd = &cobra.Command{
 	Short: "delete a created user",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		id, err := strconv.Atoi(args[0])
-		err1 := dbmanagement.DeleteUser(id)
+		id, _ := strconv.Atoi(args[0])
+		err := dbmanagement.DeleteUser(id)
 		if err != nil {
-			log.Fatalf("Error deleting user: %v", err1)
+			log.Fatalf("Error deleting user: %v", err)
 		}
 		fmt.Printf("deleted user : %v\n", id)
+	},
+}
+
+var Readallcmd = &cobra.Command{
+	Use:   "Read_all",
+	Short: "Read all users",
+	Run: func(cmd *cobra.Command, args []string) {
+		dbmanagement.Read_all()
+	},
+}
+var Readcmd = &cobra.Command{
+	Use:   "Read [id] ",
+	Short: "Read a created user",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		id, _ := strconv.Atoi(args[0])
+		dbmanagement.Read(id)
 	},
 }
 

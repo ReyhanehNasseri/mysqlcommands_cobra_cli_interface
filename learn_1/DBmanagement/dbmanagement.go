@@ -32,13 +32,12 @@ func ConnectDB() error {
 }
 
 func InitEntities() {
-	if err := db.AutoMigrate(); err != nil {
+	if err := db.AutoMigrate(&User{}); err != nil {
 		log.Fatalln("failed to create entity: ", err)
 	}
 }
 
 func InsertUser(user User) (*User, error) {
-	fmt.Println("hi")
 	fmt.Println(user)
 	result := db.Create(&user)
 
@@ -66,4 +65,22 @@ func UpdateUser(id int, newFirstname string, newLastname string) *User {
 func DeleteUser(id int) error {
 	result := db.Delete(&User{}, id)
 	return result.Error
+}
+
+func Read(id int) {
+
+	var user []User
+	db.First(&user, id)
+	for _, attribute := range user {
+		fmt.Printf("ID: %d, Firstname: %s , Lastname :%s\n", attribute.ID, attribute.Firstname, attribute.Lastname)
+	}
+}
+
+func Read_all() {
+
+	var Users []User
+	db.Find(&Users)
+	for _, user := range Users {
+		fmt.Printf("ID: %d, Firstname: %s , Lastname : %s\n ", user.ID, user.Firstname, user.Lastname)
+	}
 }
